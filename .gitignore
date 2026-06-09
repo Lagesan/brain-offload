@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local launcher scripts
+brainOffload.bat
+*.bat
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+
+# Cache
+.cache/
