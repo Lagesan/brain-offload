@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import nlp from "compromise";
+import MissionHUD from "./MissionHUD";
+
 
 const AREAS = [
   { id: "inbox", label: "Inbox", emoji: "📥", color: "#64748b", glow: "rgba(100, 116, 139, 0.25)" },
@@ -893,15 +895,16 @@ export default function App() {
   const detectedArea = autoDetected ? AREAS.find(a => a.id === autoDetected) : null;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#06060c", color: "#e2e8f0", fontSize: 14 }}>
-      <div className="liquid-glass" style={{ width: 220, margin: "16px 0 16px 16px", display: "flex", flexDirection: "column", padding: "20px 0", flexShrink: 0, background: "rgba(10, 10, 15, 0.45)" }}>
-        <div style={{ padding: "0 20px 16px", fontWeight: 700, fontSize: 16, letterSpacing: "-0.5px", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          🧠 Brain Offload
-          <button onClick={() => setFocusMode(true)}
-            style={{ background: "rgba(129, 140, 248, 0.15)", border: "1px solid rgba(129, 140, 248, 0.3)", borderRadius: 8, padding: "4px 10px", cursor: "pointer", fontSize: 11, color: "#a5b4fc", fontWeight: 600 }}>
-            FOCUS
-          </button>
-        </div>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "#06060c", color: "#e2e8f0", fontSize: 14 }}>
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <div className="liquid-glass" style={{ width: 220, margin: "16px 0 16px 16px", display: "flex", flexDirection: "column", padding: "20px 0", flexShrink: 0, background: "rgba(10, 10, 15, 0.45)" }}>
+          <div style={{ padding: "0 20px 16px", fontWeight: 700, fontSize: 16, letterSpacing: "-0.5px", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            🧠 Brain Offload
+            <button onClick={() => setFocusMode(true)}
+              style={{ background: "rgba(129, 140, 248, 0.15)", border: "1px solid rgba(129, 140, 248, 0.3)", borderRadius: 8, padding: "4px 10px", cursor: "pointer", fontSize: 11, color: "#a5b4fc", fontWeight: 600 }}>
+              FOCUS
+            </button>
+          </div>
 
         {[{ id: "today", label: "Today's Focus", emoji: "🎯" }, { id: "dashboard", label: "Dashboard", emoji: "📊" }].map(v => (
           <SideItem key={v.id} active={view === v.id} onClick={() => setView(v.id)} label={v.label} emoji={v.emoji} />
@@ -918,10 +921,10 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: 16 }}>
+      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden", padding: 16 }}>
         <div className="liquid-glass" style={{ padding: "12px 18px", marginBottom: 16, background: "rgba(15, 15, 25, 0.5)" }}>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-            <div style={{ flex: 1, position: "relative" }}>
+            <div style={{ flex: 1, minWidth: 0, position: "relative" }}>
               <input ref={inputRef} value={qi}
                 onChange={e => handleCaptureInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && addTask()}
@@ -972,6 +975,8 @@ export default function App() {
           {view.startsWith("area:") && <AreaView area={viewArea} tasks={viewTasks} {...sharedTaskProps} />}
         </div>
       </div>
+      </div>
+      <MissionHUD tasks={tasks} />
     </div>
   );
 }
